@@ -1,0 +1,53 @@
+{{ teamserver_contrast_datadir }}/logs/audit.log {
+ copytruncate
+ daily
+ rotate 7
+ compress
+ missingok
+ size 25M
+}
+
+{{ teamserver_contrast_datadir }}/logs/console.log  {
+ copytruncate
+ daily
+ rotate 7
+ compress
+ missingok
+ size 25M
+}
+
+{{ teamserver_contrast_datadir }}/logs/contrast.log  {
+ copytruncate
+ daily
+ rotate 7
+ compress
+ missingok
+ size 25M
+}
+
+{{ teamserver_contrast_datadir }}/logs/migration.log  {
+ copytruncate
+ daily
+ rotate 7
+ compress
+ missingok
+ size 25M
+}
+
+{{ teamserver_contrast_datadir }}/logs/security-events.log  {
+ copytruncate
+ daily
+ rotate 7
+ compress
+ missingok
+ size 25M
+}
+
+{{ teamserver_contrast_datadir }}/logs/windward.log {
+ copytruncate
+ daily
+ rotate 7
+ compress
+ missingok
+ size 25M
+}

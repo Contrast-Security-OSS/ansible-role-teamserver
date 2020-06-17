@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration monitorInterval="60">
+    <Appenders>   
+        <File name="AUDIT" fileName="{{ teamserver_contrast_datadir }}logs/audit.log">
+            <PatternLayout>
+                <Pattern>
+                    {% raw %}%d %m%n{% endraw %}
+                </Pattern>
+            </PatternLayout>
+        </File>
+        <File name="DAILY" fileName="{{ teamserver_contrast_datadir }}logs/contrast.log">
+            <PatternLayout>
+                <Pattern>
+                    {% raw %}%d{ddMMyy HH.mm.ss,SSS}{%X{session.id}} {%X{user.name}} {%X{remote.addr}} %-5p (%F:%L) %m%n{% endraw %}</Pattern>
+                </PatternLayout>
+            </File>
+            <File name="ESAPI" fileName="{{ teamserver_contrast_datadir }}logs/security-events.log">
+                <PatternLayout>
+                    <Pattern>
+                        {% raw %}%d %m%n{% endraw %}
+                    </Pattern>
+                </PatternLayout>
+            </File>
+            <File name="MIGRATION" fileName="{{ teamserver_contrast_datadir }}logs/migration.log">
+                <PatternLayout>
+                    <Pattern>
+                        {% raw %}%d{ddMMyy HH.mm.ss,SSS} %-5p (%F:%L) %m%n{% endraw %}
+                    </Pattern>
+                </PatternLayout>
+            </File>
+            <Console name="STDOUT">
+                <PatternLayout>
+                    <Pattern>
+                        {% raw %}%d{ddMMyy HH.mm.ss,SSS}{%X{session.id}} {%X{user.name}} {%X{remote.addr}} %-5p (%F:%L) %m%n{% endraw %}</Pattern>
+                    </PatternLayout>
+                </Console>
+            </Appenders>
+            <Loggers>
+                <Root level="INFO">
+                    <AppenderRef ref="DAILY"/>
+                    <AppenderRef ref="STDOUT"/>
+                </Root>
+                <Logger name="com.aspectsecurity.contrast.teamserver.audit" level="WARN">
+                    <AppenderRef ref="AUDIT"/>
+                </Logger>
+                <Logger name="com.aspectsecurity.contrast.teamserver.webapp.console.filesystem" level="DEBUG">
+                    <AppenderRef ref="CONSOLE_EVENTS"/>
+                </Logger>
+                <Logger name="JavaEncryptor" level="DEBUG" additivity="false">
+                    <AppenderRef ref="ESAPI"/>
+                </Logger>
+                <Logger name="CipherTextSerializer" level="DEBUG" additivity="false">
+                    <AppenderRef ref="ESAPI"/>
+                </Logger>
+                <Logger name="SecurityConfiguration" level="DEBUG" additivity="false">
+                    <AppenderRef ref="ESAPI"/>
+                </Logger>
+                <Logger name="com.aspectsecurity.contrast.teamserver.webservices" level="INFO"></Logger>
+                <Logger name="com.aspectsecurity.contrast.teamserver.webapp.interceptor" level="INFO"></Logger>
+                <Logger name="com.aspectsecurity.contrast.teamserver.security.superadmin.CustomX509Authentication" level="INFO"></Logger>
+                <Logger name="com.aspectsecurity.contrast.teamserver.security.auth.CustomWebSecurityExpressionRoot" level="ERROR"></Logger>
+                <Logger name="com.aspectsecurity.contrast.teamserver.service.engine" level="INFO"></Logger>
+                <Logger name="com.aspectsecurity.contrast.teamserver.security.auth.dal" level="INFO"></Logger>
+                <Logger name="com.aspectsecurity.contrast.teamserver.util" level="WARN"></Logger>
+                <Logger name="com.aspectsecurity.contrast.teamserver.persistence" level="WARN"></Logger>
+                <Logger name="com.aspectsecurity" level="INFO">
+                    <AppenderRef ref="CONSOLE_EVENTS"/>
+                </Logger>
+                <Logger name="com.contrastsecurity" level="INFO">
+                    <AppenderRef ref="CONSOLE_EVENTS"/>
+                </Logger>
+
+                <!-- FS and DB updates -->
+                <Logger name="com.aspectsecurity.contrast.teamserver.startup.update" level="TRACE">
+                    <AppenderRef ref="MIGRATION"/>
+                </Logger>
+                <Logger name="com.googlecode.flyway" level="TRACE">
+                    <AppenderRef ref="MIGRATION"/>
+                </Logger>
+
+                <Logger name="org.cometd" level="INFO"></Logger>
+                <Logger name="org.owasp" level="INFO"></Logger>
+                <Logger name="com.mchange" level="WARN"></Logger>
+                <Logger name="org" level="WARN"></Logger>
+                <Logger name="net" level="WARN"></Logger>
+                <Logger name="com" level="WARN"></Logger>
+                
+                
+            </Loggers>
+        </Configuration>

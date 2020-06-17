@@ -1,0 +1,94 @@
+---
+- name: Create contents of contrast data directory ({{ teamserver_contrast_datadir }}
+  file: 
+    path: "{{ teamserver_contrast_datadir }}/{{ item }}"
+    state: directory 
+    owner: tomcat 
+    group: tomcat
+  with_items:
+    - esapi
+
+- name: Copy contrast esapi templates to {{ teamserver_contrast_datadir }} on target server
+  template: 
+    src: contrast_esapi_{{ item }} 
+    dest: "{{ teamserver_contrast_datadir }}esapi/{{ item }}"
+    owner: tomcat 
+    group: tomcat
+  with_items:
+    - ESAPI.properties
+    - validation.properties
+    - ValidationMessages.properties
+    - ValidationMessages_es.properties
+
+- name: Update database properties {{ teamserver_contrast_datadir }} on target server
+  template: 
+    src: contrast_conf_database.properties 
+    dest: "{{ teamserver_contrast_datadir }}/conf/database.properties.cleartext"
+    owner: tomcat 
+    group: tomcat
+  when: teamserver_update_database_properties
+  tags: ['update_teamserver_property_files']
+
+- name: Update AD properties {{ teamserver_contrast_datadir }} on target server
+  template: 
+    src: contrast_conf_ad.properties 
+    dest: "{{ teamserver_contrast_datadir }}/conf/ad.properties.cleartext"
+    owner: tomcat 
+    group: tomcat
+  when: teamserver_update_ad_properties
+  tags: ['update_teamserver_property_files']
+
+
+- name: Update LDAP properties {{ teamserver_contrast_datadir }} on target server
+  template: 
+    src: contrast_conf_ldap.properties 
+    dest: "{{ teamserver_contrast_datadir }}/conf/ldap.properties.cleartext" 
+    owner: tomcat 
+    group: tomcat
+  when: teamserver_update_ldap_properties
+  tags: ['update_teamserver_property_files']
+
+- name: Update servo properties to {{ teamserver_contrast_datadir }} on target server
+  template: 
+    src: contrast_conf_servo.properties 
+    dest: "{{ teamserver_contrast_datadir }}/conf/servo.properties.cleartext"
+    owner: tomcat 
+    group: tomcat
+  when: teamserver_update_servo_properties
+  tags: ['update_teamserver_property_files']
+
+- name: Update saml properties to {{ teamserver_contrast_datadir }} on target server
+  template: 
+    src: contrast_conf_saml.properties 
+    dest: "{{ teamserver_contrast_datadir }}/conf/saml.properties.cleartext"
+    owner: tomcat 
+    group: tomcat
+  when: teamserver_update_saml_properties
+  tags: ['update_teamserver_property_files']
+  
+- name: Update avatar properties to {{ teamserver_contrast_datadir }} on target server
+  template: 
+    src: contrast_conf_avatar.properties 
+    dest: "{{ teamserver_contrast_datadir }}/conf/avatar.properties.cleartext"
+    owner: tomcat 
+    group: tomcat
+  when: teamserver_update_saml_properties
+  tags: ['update_teamserver_property_files']
+
+- name: Update agent_discovery properties to {{ teamserver_contrast_datadir }} on target server
+  template: 
+    src: contrast_conf_agent_discovery.properties 
+    dest: {{ teamserver_contrast_datadir }}/conf/agent_discovery.properties.cleartext 
+    owner: tomcat 
+    group: tomcat
+  when: teamserver_update_agent_discovery_properties
+  tags: ['update_teamserver_property_files']
+
+- name: Update activemq_connection properties to {{ teamserver_contrast_datadir }} on target server
+  template: 
+    src: contrast_conf_activemq_connection.properties 
+    dest: {{ teamserver_contrast_datadir }}/conf/activemq_connection.properties.cleartext 
+    owner: tomcat 
+    group: tomcat   
+  when: teamserver_update_agent_discovery_properties
+  tags: ['update_teamserver_property_files']

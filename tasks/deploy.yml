@@ -1,0 +1,24 @@
+---
+- name: Install boto to use S3 module (CentOS)
+  yum: pkg=python-boto state=present
+  when: ansible_distribution == 'CentOS'
+
+- name: Install boto to use S3 module (Ubuntu)
+  apt: name=python-boto state=present
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Download artifact from repository
+  get_url: >
+    url={{ teamserver_signed_artifact_url }}
+    dest=/var/lib/tomcat/webapps/Contrast.war
+  when: teamserver_deploy_enabled
+  notify:
+    - restart tomcat
+
+- name: Allow tomcat access to the war
+  file: >
+    path=/var/lib/tomcat/webapps/Contrast.war
+    state=touch
+    owner=tomcat
+    group=deployers
+  when: teamserver_deploy_enabled

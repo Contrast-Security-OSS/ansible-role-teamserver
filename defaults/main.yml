@@ -1,0 +1,214 @@
+---
+# defaults file for ansible-role-teamserver
+teamserver_contrast_datadir: "/ebs/contrast-data/"
+teamserver_deploy_enabled: false
+teamserver_license_path: "files/contrast.lic"
+teamserver_nginx_public_dir: "/var/www"
+
+# "fresh" or "used"
+teamserver_license_type: false
+teamserver_install_license: "used"
+teamserver_encrypted_properties_folder: "files/encrypted"
+teamserver_signed_artifact_url:
+teamserver_saml_keystore_path: "files/role-saml-keystore.jks"
+
+teamserver_update_cassandra_properties: true
+teamserver_update_database_properties: true
+teamserver_update_ldap_properties: true
+teamserver_update_ad_properties: true
+teamserver_update_servo_properties: true
+teamserver_update_saml_properties: true
+teamserver_update_agent_discovery_properties: true
+
+teamserver_region: "us-east-1"
+
+# used in agent.properties
+teamserver_agent_discovery_mode: filesystem
+
+# used in ad.properties.clean
+teamserver_ad_userDn: "cn=Directory Manager"
+teamserver_ad_identity_attribute_name: mail
+teamserver_ad_password: root
+teamserver_ad_group_users: "cn=Contrast Users,cn=Users,dc=contrastsecurity,dc=com"
+teamserver_ad_url: 389
+teamserver_ad_group_admin: "cn=Contrast Admins,cn=Users,dc=contrastsecurity,dc=com"
+teamserver_ad_base: "dc=contrastsecurity,dc=com"
+
+# used in database.properties.clean
+teamserver_jdbc_url: localhost
+teamserver_jdbc_pass: myfavoritepassword
+teamserver_jdbc_user: myfavoriteuser
+teamserver_jdbc_driver: com.mysql.jdbc.Driver
+teamserver_jdbc_debug: "false"
+teamserver_jdbc_type: MYSQL
+teamserver_jdbc_dialect: com.aspectsecurity.contrast.teamserver.persistence.CustomMySQL5Dialect
+teamserver_jdbc_max_pool_size: 50
+teamserver_jdbc_min_pool_size: 5
+
+# hub.properties
+teamserver_try_hub: "false"
+teamserver_hub_host: hub.contrastsecurity.com
+teamserver_hub_port: 443
+teamserver_hub_protocol: https
+teanserver_hub_getall_url: "/rest/upate/1/teamserver.html"
+teamserver_hub_getlatest_url: "/rest/update/1/teamserver/latest.html"
+teamserver_hub_task_populatelibcache_sleep_millis: 1000
+teamserver_hub_task_populatelibcache_bulk_size: 25
+teamserver_hub_http_proxyHost: ''
+teamserver_hub_proxySet: "false"
+teamserver_hub_http_proxyPassword: ''
+teamserver_hub_http_proxyPort: ''
+teamserver_hub_http_proxyUser: ''
+
+
+# general.properties
+teamserver_general_teamserver_url: "http://ansible-role-teamserver:8080/Contrast/"
+teamserver_general_audit_use_forwardedfor: "false"
+teamserver_general_dotnet_name: ContrastSetup
+teamserver_general_jar_name: contrast.jar
+teamserver_general_jms_channel_concurrency_serverActivity: 2
+teamserver_general_jms_channel_concurrency_appUpdate: "5-10"
+teamserver_general_jms_channel_concurrency_routeCoverage: 3
+teamserver_general_jms_channel_concurrency_routeCoverageVulns: 1
+teamserver_general_jms_channel_concurrency_attackAlerts: 2
+teamserver_general_jms_channel_concurrency_applicationActivity: 2
+teamserver_general_jms_channel_concurrency_engineTraces: 2
+teamserver_general_jms_channel_concurrency_notificationNewServer: 1
+teamserver_general_jms_channel_concurrency_notificationServerOffline: 1
+teamserver_general_jms_channel_explicit_qos_enabled: "false"
+teamserver_general_jms_channel_time_to_live: 604800000
+teamserver_general_jms_connection_factory_session_cache_size: 30
+teamserver_general_jms_database_delete_on_startup_once: "false"
+# default connections in the pool right now
+teamserver_general_jms_max_connections: 50
+teamserver_general_lang_default: en
+teamserver_general_lang_i18n: en,es
+teamserver_general_node_name: node-contrast
+teamserver_general_teamserver_cert: ''
+teamserver_general_timezone_default: EST
+teamserver_general_eac_expiration: 600
+teamserver_general_eac_cache_type: MEMCACHE
+teamserver_general_reporting_generation_limit: 1250
+
+# ldap.properties.clean
+teamserver_ldap_server_port: 1389
+teamserver_ldap_bind_method: Simple
+teamserver_ldap_group_users: "cn=Contrast Users,cn=Users,dc=contrastsecurity,dc=com"
+teamserver_ldap_user_objectclass: inetOrgPerson
+teamserver_ldap_user_use_password_attribute: "true"
+teamserver_ldap_user_password_attribute: userPassword
+teamserver_ldap_bind_username: "cn=Directory Manager"
+teamserver_ldap_group_member_attribute: uniqueMember
+teamserver_ldap_bind_realm: NONE
+teamserver_ldap_group_use_subtrees: "true"
+teamserver_ldap_user_objectClass: inetOrgPerson
+teamserver_ldap_group_objectclass:
+teamserver_ldap_user_management: "true"
+teamserver_ldap_user_baseDN: "ou=users,ou=shared,o=teamserver"
+teamserver_ldap_user_firstname_attribute: givenName
+teamserver_ldap_user_use_subtrees: "true"
+teamserver_ldap_baseDN: "dc=contrastsecurity,dc=com"
+teamserver_ldap_server_protocol: ldap
+teamserver_ldap_group_baseDN: "ou=groups,ou=shared,o=teamserver"
+teamserver_ldap_identity_attribute_name: mail
+teamserver_ldap_group_lookup_strategy: GroupToUser
+teamserver_ldap_user_mail_attribute: mail
+teamserver_ldap_user_group_attribute: memberOf
+teamserver_ldap_user_username_attribute: cn
+teamserver_ldap_user_lastname_attribute: sn
+teamserver_ldap_group_admin: "cn=Contrast Admins,cn=Users,dc=contrastsecurity,dc=com"
+teamserver_ldap_server_address: "10.0.0.0"
+teamserver_ldap_bind_password: password
+
+# mail.properties
+teamserver_jira_report_to: "support@contrastsecurity.com"
+teamserver_jira_report_sender: contrast-no-reply@contrastsecurity.com
+teamserver_mail_enabled: "true"
+teamserver_mail_username: username@host.com
+teamserver_mail_debug: "false"
+teamserver_alert_subject: "Contrast- Vulnerability Alert :"
+teamserver_mail_smtp_starttls: "false"
+teamserver_mail_exchange_auth_required: "false"
+teamserver_mail_host: localhost
+teamserver_mail_smtp_auth: "false"
+teamserver_alert_sender: contrast-no-reply@contrastsecurity.com
+teamserver_mail_password: password
+teamserver_mail_port: 25
+teamserver_mail_protocol: smtp
+
+teamserver_esapi_encryptor_master_salt: "abc123"
+teamserver_esapi_encryptor_master_key: "xyz789"
+
+teamserver_auth_authentication_mode: db
+
+teamserver_security_expression_web_handler_mode: SIMPLE
+teamserver_security_superadmin_check_cert: "false"
+teamserver_security_superadmin_check_ip: "false"
+teamserver_security_expression_method_handler_mode: SIMPLE
+teamserver_security_superadmin_ip:
+teamserver_security_csrf_enforcement: "true"
+
+teamserver_head_js: ""
+teamserver_footer_html: "<!-- -->"
+
+# contrast_conf_servo.properties
+# to skip all metrics and objects for a space, leave observer blank
+# EXAMPLE: teamserver_servo_activemq_observers:
+# the line above would NOT log ANY metrics to cloudwatch or file
+# EXAMPLE teamserver_servo_activemq_observers: FILE
+# the line above would love metrics to a file
+
+# The opposite is true for metrics and observers!
+# When left blank, ALL metrics and/or observers will be logged to observer(s)
+# EXAMPLE: teamserver_servo_activemq_file_metrics:
+# Above -- ALL METRICS!
+# EXAMPLE: teamserver_servo_activemq_file_metrics: QueueSize,ConsumerCount
+# Above -- 2 metrics
+teamserver_servo_activemq_observers: FILE
+teamserver_servo_activemq_file_zerovaluemetrics: "true"
+teamserver_servo_activemq_file_metrics: amq-f-m
+teamserver_servo_activemq_file_objects: amq-f-o
+teamserver_servo_activemq_cloudwatch_metrics: amq-cw-m
+teamserver_servo_activemq_cloudwatch_objects: amq-cw-o
+
+teamserver_servo_spring_observers: FILE
+teamserver_servo_spring_file_zerovaluemetrics: "true"
+teamserver_servo_spring_file_metrics: s-f-m
+teamserver_servo_spring_file_objects: s-f-o
+teamserver_servo_spring_cloudwatch_metrics: s-c-m
+teamserver_servo_spring_cloudwatch_objects: s-c-o
+
+teamserver_servo_bg_observers: FILE
+teamserver_servo_bg_file_zerovaluemetrics: "true"
+teamserver_servo_bg_file_metrics: bg-f-m
+teamserver_servo_bg_file_objects: bg-f-o
+teamserver_bg_cloudwatch_metrics: bg-cw-m
+teamserver_bg_cloudwatch_objects: bg-cw-o
+
+# refresh value is in minutes
+teamserver_servo_refresh: 1
+teamserver_servo_cloudwatch_accesskey: abcd123
+teamserver_servo_cloudwatch_secretkey: xyz789
+teamserver_servo_cloudwatch_namespace_prefix: ansible-role-teamserver
+
+teamserver_authenticator_saml_keystore_path: role/based/keystore/path/to/jks.jks
+teamserver_authenticator_saml_keystore_default_key: contrast-saml
+teamserver_authenticator_saml_keystore_passwordMap: contrast-saml=changeit
+teamserver_authenticator_saml_keystore_password: changeit
+teamserver_authenticator_saml_url: "http://ansible-role-teamserver:8080/Contrast/"
+
+avatar_cloudfront_url: "default.cloudfront.url"
+avatar_s3_access_key_id:
+avatar_s3_secret_access_key:
+avatar_s3_bucket: "default_avatar_bucket"
+
+# ARDY
+teamserver_ardy_java_enabled: true
+teamserver_ardy_python_enabled: true
+teamserver_ardy_ruby_enabled: true
+teamserver_ardy_dotnet_enabled: true
+teamserver_ardy_node_enabled: true
+teamserver_ardy_proxy_enabled: true
+
+# agent discovery
+agent_s3_bucket:
