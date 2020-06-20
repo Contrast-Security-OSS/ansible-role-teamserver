@@ -1,9 +1,11 @@
 ---
 # defaults file for ansible-role-teamserver
-teamserver_contrast_datadir: "/ebs/contrast-data/"
+teamserver_contrast_datadir: "/opt/contrast/data"
 teamserver_deploy_enabled: false
 teamserver_license_path: "files/contrast.lic"
 teamserver_nginx_public_dir: "/var/www"
+teamserver_service_name: contrast-server
+teamserver_service_account: contrast_service
 
 # "fresh" or "used"
 teamserver_license_type: false
@@ -12,13 +14,27 @@ teamserver_encrypted_properties_folder: "files/encrypted"
 teamserver_signed_artifact_url:
 teamserver_saml_keystore_path: "files/role-saml-keystore.jks"
 
-teamserver_update_cassandra_properties: true
 teamserver_update_database_properties: true
-teamserver_update_ldap_properties: true
-teamserver_update_ad_properties: true
-teamserver_update_servo_properties: true
-teamserver_update_saml_properties: true
-teamserver_update_agent_discovery_properties: true
+teamserver_update_ldap_properties: false
+teamserver_update_ad_properties: false
+teamserver_update_servo_properties: false
+teamserver_update_saml_properties: false
+teamserver_update_agent_discovery_properties: false
+teamserver_update_agent_properties: false
+teamserver_update_auth_properties: false
+teamserver_update_general_properties: false
+teamserver_update_hub_properties: false
+teamserver_update_mail_properties: false
+teamserver_update_security_properties: false
+teamserver_update_support_properties: false
+teamserver_update_features_json: false
+teamserver_update_head_js: false
+teamserver_update_footer_html: false
+teamserver_update_ardyproperties: false
+teamserver_update_metrics_properties: false
+teamserver_update_telemetry_properties: false
+teamserver_update_esapi: false
+
 
 teamserver_region: "us-east-1"
 

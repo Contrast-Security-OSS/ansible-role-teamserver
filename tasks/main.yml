@@ -1,30 +1,17 @@
 ---
-- name: Add groups
-  group: 
-    name: "{{ item }}"
-  with_items:
-    - deployers
-    - tomcat
-
-- name: add user "tomcat"
-  user: 
-    name: "tomcat"
-    group: "tomcat" 
-    home: /usr/share/tomcat
-
 - name: Create contrast data directory ({{ teamserver_contrast_datadir }}
   file: 
     path: "{{ teamserver_contrast_datadir }}"
     state: directory 
-    owner: tomcat 
-    group: tomcat
+    owner: "{{ teamserver_service_account }}" 
+    group: "{{ teamserver_service_account }}"
 
 - name: Create contents of contrast data directory ({{ teamserver_contrast_datadir }}
   file: 
     path: "{{ teamserver_contrast_datadir }}/{{ item }}"
     state: directory 
-    owner: tomcat 
-    group: deployers 
+    owner: "{{ teamserver_service_account }}" 
+    group: "{{ teamserver_service_account }}"
     mode: 0770
   with_items:
     - conf
@@ -58,81 +45,79 @@
   file: 
     path: "{{ teamserver_contrast_datadir }}/.contrast"
     tate: touch 
-    owner: tomcat 
-    group: tomcat
+    owner: "{{ teamserver_service_account }}" 
+    group: "{{ teamserver_service_account }}"
 
 - name: install previously initialized license
   copy: 
     src: "{{ teamserver_license_path }}"
     dest: "{{ teamserver_contrast_datadir }}/contrast.lic"
-    owner: tomcat 
-    group: tomcat
+    owner: "{{ teamserver_service_account }}" 
+    group: "{{ teamserver_service_account }}"
 
 
 - name: Copy contrast esapi templates to {{ teamserver_contrast_datadir }}/esapi on target server
   template: 
     src: contrast_esapi_{{ item }} 
     dest: "{{ teamserver_contrast_datadir }}esapi/{{ item }}" 
-    owner: tomcat 
-    group: tomcat
+    owner: "{{ teamserver_service_account }}" 
+    group: "{{ teamserver_service_account }}"
   with_items:
     - ESAPI.properties
     - validation.properties
     - ValidationMessages.properties
     - ValidationMessages_es.properties
+  when: teamserver_update_esapi
 
 - name: Copy contrast conf templates to {{ teamserver_contrast_datadir }}/conf on target server
   template: 
     src: contrast_conf_{{ item }} 
     dest: "{{ teamserver_contrast_datadir }}/conf/{{ item }}"
-    owner: tomcat 
-    group: tomcat
+    owner: "{{ teamserver_service_account }}" 
+    group: "{{ teamserver_service_account }}"
   with_items:
-    - agent.properties
-    - auth.properties
-    - general.properties
-    - hub.properties
-    - mail.properties
-    - security.properties
-    - support.properties
-    - features.json
-    - head.js
-    - footer.html
-    - ardy.properties
-    - metrics.properties
-    - telemetry.properties
+    - { filename: agent.properties, conditional: "{{ teamserver_update_agent_properties }}" }
+    - { filename: auth.properties, conditional: "{{ teamserver_update_auth_properties }}" }
+    - { filename: general.properties, conditional: "{{ teamserver_update_general_properties }}" }
+    - { filename: hub.properties, conditional: "{{ teamserver_update_hub_properties }}" }
+    - { filename: mail.properties, conditional: "{{ teamserver_update_mail_properties }}" }
+    - { filename: security.properties, conditional: "{{ teamserver_update_security_properties }}" }
+    - { filename: support.properties, conditional: "{{ teamserver_update_support_properties }}" }
+    - { filename: features.json, conditional: "{{ teamserver_update_features_json }}" }
+    - { filename: head.js, conditional: "{{ teamserver_update_head_js }}" }
+    - { filename: footer.html, conditional: "{{ teamserver_update_footer_html }}" }
+    - { filename: ardy.properties, conditional: "{{ teamserver_update_ardyproperties }}" }
+    - { filename: metrics.properties, conditional: "{{ teamserver_update_metrics_properties }}" }
+    - { filename: telemetry.properties, conditional: "{{ teamserver_update_telemetry_properties }}" }
   tags: ['update_teamserver_property_files']
-
-
 
 - name: Preinitializing TeamServer
   file: 
     path: "{{ teamserver_contrast_datadir }}/.initialized"
     state: touch 
-    owner: tomcat 
-    group: tomcat
+    owner: "{{ teamserver_service_account }}" 
+    group: "{{ teamserver_service_account }}"
 
-- name: Copy encrypted contrast data templates to {{ teamserver_contrast_datadir }} on target server
-  copy: 
-    src: "{{ teamserver_encrypted_properties_folder }}/{{ item }}"
-    dest: "{{ teamserver_contrast_datadir }}/conf/{{ item }}"
-    owner: tomcat 
-    group: tomcat
-  with_items:
-    - ad.properties
-    - database.properties
-    - ldap.properties
-    - servo.properties
-    - saml.properties
-    - avatar.properties
-
+# - name: Copy encrypted contrast data templates to {{ teamserver_contrast_datadir }} on target server
+#   copy: 
+#     src: "{{ teamserver_encrypted_properties_folder }}/{{ item }}"
+#     dest: "{{ teamserver_contrast_datadir }}/conf/{{ item }}"
+#     owner: "{{ teamserver_service_account }}" 
+#     group: "{{ teamserver_service_account }}"
+#   with_items:
+#     - ad.properties
+#     - database.properties
+#     - ldap.properties
+#     - servo.properties
+#     - saml.properties
+#     - avatar.properties
 
 - name: Update database properties {{ teamserver_contrast_datadir }} on target server
   template: 
     src: contrast_conf_database.properties 
     dest: "{{ teamserver_contrast_datadir }}/conf/database.properties.cleartext"
-    owner: tomcat 
-    group: tomcat
+    owner: "{{ teamserver_service_account }}" 
+    group: "{{ teamserver_service_account }}"
   when: teamserver_update_database_properties
   tags: ['update_teamserver_property_files']
 
@@ -140,8 +125,8 @@
   template: 
     src: contrast_conf_ad.properties 
     dest: "{{ teamserver_contrast_datadir }}/conf/ad.properties.cleartext"
-    owner: tomcat 
-    group: tomcat
+    owner: "{{ teamserver_service_account }}" 
+    group: "{{ teamserver_service_account }}"
   when: teamserver_update_ad_properties
   tags: ['update_teamserver_property_files']
 
@@ -149,8 +134,8 @@
   template: 
     src: contrast_conf_ldap.properties 
     dest: "{{ teamserver_contrast_datadir }}/conf/ldap.properties.cleartext" 
-    owner: tomcat 
-    group: tomcat
+    owner: "{{ teamserver_service_account }}" 
+    group: "{{ teamserver_service_account }}"
   when: teamserver_update_ldap_properties
   tags: ['update_teamserver_property_files']
 
@@ -158,8 +143,8 @@
   template: 
     src: contrast_conf_servo.properties 
     dest: "{{ teamserver_contrast_datadir }}/conf/servo.properties.cleartext"
-    owner: tomcat 
-    group: tomcat
+    owner: "{{ teamserver_service_account }}" 
+    group: "{{ teamserver_service_account }}"
   when: teamserver_update_servo_properties
   tags: ['update_teamserver_property_files']
 
@@ -167,8 +152,8 @@
   template: 
     src: contrast_conf_saml.properties 
     dest: "{{ teamserver_contrast_datadir }}/conf/saml.properties.cleartext"
-    owner: tomcat 
-    group: tomcat
+    owner: "{{ teamserver_service_account }}" 
+    group: "{{ teamserver_service_account }}"
   when: teamserver_update_saml_properties
   tags: ['update_teamserver_property_files']
   
@@ -176,8 +161,8 @@
   template: 
     src: contrast_conf_avatar.properties 
     dest: "{{ teamserver_contrast_datadir }}/conf/avatar.properties.cleartext"
-    owner: tomcat 
-    group: tomcat
+    owner: "{{ teamserver_service_account }}" 
+    group: "{{ teamserver_service_account }}"
   when: teamserver_update_saml_properties
   tags: ['update_teamserver_property_files']
 
@@ -185,8 +170,8 @@
   template: 
     src: contrast_conf_agent_discovery.properties 
     dest: "{{ teamserver_contrast_datadir }}/conf/agent_discovery.properties.cleartext"
-    owner: tomcat 
-    group: tomcat
+    owner: "{{ teamserver_service_account }}" 
+    group: "{{ teamserver_service_account }}"
   when: teamserver_update_agent_discovery_properties
   tags: ['update_teamserver_property_files']
 
@@ -194,8 +179,8 @@
   template: 
     src: contrast_conf_activemq_connection.properties 
     dest: "{{ teamserver_contrast_datadir }}/conf/activemq_connection.properties.cleartext"
-    owner: tomcat 
-    group: tomcat   
+    owner: "{{ teamserver_service_account }}" 
+    group: "{{ teamserver_service_account }}"   
   when: teamserver_update_agent_discovery_properties
   tags: ['update_teamserver_property_files']
 
