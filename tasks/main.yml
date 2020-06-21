@@ -71,8 +71,8 @@
 
 - name: Copy contrast conf templates to {{ teamserver_contrast_datadir }}/conf on target server
   template: 
-    src: contrast_conf_{{ item }} 
-    dest: "{{ teamserver_contrast_datadir }}/conf/{{ item }}"
+    src: contrast_conf_{{ item.filename }} 
+    dest: "{{ teamserver_contrast_datadir }}/conf/{{ item.filename }}"
     owner: "{{ teamserver_service_account }}" 
     group: "{{ teamserver_service_account }}"
   with_items:
@@ -89,6 +89,7 @@
     - { filename: ardy.properties, conditional: "{{ teamserver_update_ardyproperties }}" }
     - { filename: metrics.properties, conditional: "{{ teamserver_update_metrics_properties }}" }
     - { filename: telemetry.properties, conditional: "{{ teamserver_update_telemetry_properties }}" }
+  when: "{{ item.conditional }} == true"
   tags: ['update_teamserver_property_files']
 
 - name: Preinitializing TeamServer
