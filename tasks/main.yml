@@ -44,7 +44,7 @@
 - name: Creating hidden .contrast file in contrast data directory
   file: 
     path: "{{ teamserver_contrast_datadir }}/.contrast"
-    tate: touch 
+    state: touch 
     owner: "{{ teamserver_service_account }}" 
     group: "{{ teamserver_service_account }}"
 
