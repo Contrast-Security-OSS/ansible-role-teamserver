@@ -60,6 +60,10 @@ teamserver_jdbc_type: MYSQL
 teamserver_jdbc_dialect: com.aspectsecurity.contrast.teamserver.persistence.CustomMySQL5Dialect
 teamserver_jdbc_max_pool_size: 50
 teamserver_jdbc_min_pool_size: 5
+teamserver_jdbc_database_type: default
+teamserver_jdbc_database_enabled: "true"
+teamserver_jdbc_database_bk_time: "4:0:0"
+teamserver_jdbc_database_bk_time: /opt/contrast/data/backups/db
 
 # hub.properties
 teamserver_try_hub: "false"
