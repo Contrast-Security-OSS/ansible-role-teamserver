@@ -14,7 +14,7 @@ teamserver_encrypted_properties_folder: "files/encrypted"
 teamserver_signed_artifact_url:
 teamserver_saml_keystore_path: "files/role-saml-keystore.jks"
 
-teamserver_update_database_properties: true
+teamserver_update_database_properties: false
 teamserver_update_ldap_properties: false
 teamserver_update_ad_properties: false
 teamserver_update_servo_properties: false
