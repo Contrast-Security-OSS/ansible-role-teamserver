@@ -1,16 +1,16 @@
 ---
 - name: Create contrast data directory ({{ teamserver_contrast_datadir }}
-  file: 
+  file:
     path: "{{ teamserver_contrast_datadir }}"
-    state: directory 
-    owner: "{{ teamserver_service_account }}" 
+    state: directory
+    owner: "{{ teamserver_service_account }}"
     group: "{{ teamserver_service_account }}"
 
 - name: Create contents of contrast data directory ({{ teamserver_contrast_datadir }}
-  file: 
+  file:
     path: "{{ teamserver_contrast_datadir }}/{{ item }}"
-    state: directory 
-    owner: "{{ teamserver_service_account }}" 
+    state: directory
+    owner: "{{ teamserver_service_account }}"
     group: "{{ teamserver_service_account }}"
     mode: 0770
   with_items:
@@ -42,25 +42,25 @@
 #  3. create ansible vault encrypted groupvars file for these properties
 #  3. create hidden .contrast file
 - name: Creating hidden .contrast file in contrast data directory
-  file: 
+  file:
     path: "{{ teamserver_contrast_datadir }}/.contrast"
-    state: touch 
-    owner: "{{ teamserver_service_account }}" 
+    state: touch
+    owner: "{{ teamserver_service_account }}"
     group: "{{ teamserver_service_account }}"
 
 - name: install previously initialized license
-  copy: 
+  copy:
     src: "{{ teamserver_license_path }}"
     dest: "{{ teamserver_contrast_datadir }}/contrast.lic"
-    owner: "{{ teamserver_service_account }}" 
+    owner: "{{ teamserver_service_account }}"
     group: "{{ teamserver_service_account }}"
 
 
 - name: Copy contrast esapi templates to {{ teamserver_contrast_datadir }}/esapi on target server
-  template: 
-    src: contrast_esapi_{{ item }} 
-    dest: "{{ teamserver_contrast_datadir }}esapi/{{ item }}" 
-    owner: "{{ teamserver_service_account }}" 
+  template:
+    src: contrast_esapi_{{ item }}
+    dest: "{{ teamserver_contrast_datadir }}esapi/{{ item }}"
+    owner: "{{ teamserver_service_account }}"
     group: "{{ teamserver_service_account }}"
   with_items:
     - ESAPI.properties
@@ -70,10 +70,10 @@
   when: teamserver_update_esapi
 
 - name: Copy contrast conf templates to {{ teamserver_contrast_datadir }}/conf on target server
-  template: 
-    src: contrast_conf_{{ item.filename }} 
+  template:
+    src: contrast_conf_{{ item.filename }}
     dest: "{{ teamserver_contrast_datadir }}/conf/{{ item.filename }}"
-    owner: "{{ teamserver_service_account }}" 
+    owner: "{{ teamserver_service_account }}"
     group: "{{ teamserver_service_account }}"
   with_items:
     - { filename: agent.properties, conditional: "{{ teamserver_update_agent_properties }}" }
@@ -93,17 +93,17 @@
   tags: ['update_teamserver_property_files']
 
 - name: Preinitializing TeamServer
-  file: 
+  file:
     path: "{{ teamserver_contrast_datadir }}/.initialized"
-    state: touch 
-    owner: "{{ teamserver_service_account }}" 
+    state: touch
+    owner: "{{ teamserver_service_account }}"
     group: "{{ teamserver_service_account }}"
 
 # - name: Copy encrypted contrast data templates to {{ teamserver_contrast_datadir }} on target server
-#   copy: 
+#   copy:
 #     src: "{{ teamserver_encrypted_properties_folder }}/{{ item }}"
 #     dest: "{{ teamserver_contrast_datadir }}/conf/{{ item }}"
-#     owner: "{{ teamserver_service_account }}" 
+#     owner: "{{ teamserver_service_account }}"
 #     group: "{{ teamserver_service_account }}"
 #   with_items:
 #     - ad.properties
@@ -114,107 +114,111 @@
 #     - avatar.properties
 
 - name: Update database properties {{ teamserver_contrast_datadir }} on target server
-  template: 
-    src: contrast_conf_database.properties 
+  template:
+    src: contrast_conf_database.properties
     dest: "{{ teamserver_contrast_datadir }}/conf/database.properties.cleartext"
-    owner: "{{ teamserver_service_account }}" 
+    owner: "{{ teamserver_service_account }}"
     group: "{{ teamserver_service_account }}"
   when: teamserver_update_database_properties
   tags: ['update_teamserver_property_files']
 
 - name: Update AD properties {{ teamserver_contrast_datadir }} on target server
-  template: 
-    src: contrast_conf_ad.properties 
+  template:
+    src: contrast_conf_ad.properties
     dest: "{{ teamserver_contrast_datadir }}/conf/ad.properties.cleartext"
-    owner: "{{ teamserver_service_account }}" 
+    owner: "{{ teamserver_service_account }}"
     group: "{{ teamserver_service_account }}"
   when: teamserver_update_ad_properties
   tags: ['update_teamserver_property_files']
 
 - name: Update LDAP properties {{ teamserver_contrast_datadir }} on target server
-  template: 
-    src: contrast_conf_ldap.properties 
-    dest: "{{ teamserver_contrast_datadir }}/conf/ldap.properties.cleartext" 
-    owner: "{{ teamserver_service_account }}" 
+  template:
+    src: contrast_conf_ldap.properties
+    dest: "{{ teamserver_contrast_datadir }}/conf/ldap.properties.cleartext"
+    owner: "{{ teamserver_service_account }}"
     group: "{{ teamserver_service_account }}"
   when: teamserver_update_ldap_properties
   tags: ['update_teamserver_property_files']
 
 - name: Update servo properties to {{ teamserver_contrast_datadir }} on target server
-  template: 
-    src: contrast_conf_servo.properties 
+  template:
+    src: contrast_conf_servo.properties
     dest: "{{ teamserver_contrast_datadir }}/conf/servo.properties.cleartext"
-    owner: "{{ teamserver_service_account }}" 
+    owner: "{{ teamserver_service_account }}"
     group: "{{ teamserver_service_account }}"
   when: teamserver_update_servo_properties
   tags: ['update_teamserver_property_files']
 
 - name: Update saml properties to {{ teamserver_contrast_datadir }} on target server
-  template: 
-    src: contrast_conf_saml.properties 
+  template:
+    src: contrast_conf_saml.properties
     dest: "{{ teamserver_contrast_datadir }}/conf/saml.properties.cleartext"
-    owner: "{{ teamserver_service_account }}" 
+    owner: "{{ teamserver_service_account }}"
     group: "{{ teamserver_service_account }}"
   when: teamserver_update_saml_properties
   tags: ['update_teamserver_property_files']
-  
+
 - name: Update avatar properties to {{ teamserver_contrast_datadir }} on target server
-  template: 
-    src: contrast_conf_avatar.properties 
+  template:
+    src: contrast_conf_avatar.properties
     dest: "{{ teamserver_contrast_datadir }}/conf/avatar.properties.cleartext"
-    owner: "{{ teamserver_service_account }}" 
+    owner: "{{ teamserver_service_account }}"
     group: "{{ teamserver_service_account }}"
   when: teamserver_update_saml_properties
   tags: ['update_teamserver_property_files']
 
 - name: Update agent_discovery properties to {{ teamserver_contrast_datadir }} on target server
-  template: 
-    src: contrast_conf_agent_discovery.properties 
+  template:
+    src: contrast_conf_agent_discovery.properties
     dest: "{{ teamserver_contrast_datadir }}/conf/agent_discovery.properties.cleartext"
-    owner: "{{ teamserver_service_account }}" 
+    owner: "{{ teamserver_service_account }}"
     group: "{{ teamserver_service_account }}"
   when: teamserver_update_agent_discovery_properties
   tags: ['update_teamserver_property_files']
 
 - name: Update activemq_connection properties to {{ teamserver_contrast_datadir }} on target server
-  template: 
-    src: contrast_conf_activemq_connection.properties 
+  template:
+    src: contrast_conf_activemq_connection.properties
     dest: "{{ teamserver_contrast_datadir }}/conf/activemq_connection.properties.cleartext"
-    owner: "{{ teamserver_service_account }}" 
-    group: "{{ teamserver_service_account }}"   
+    owner: "{{ teamserver_service_account }}"
+    group: "{{ teamserver_service_account }}"
   when: teamserver_update_agent_discovery_properties
   tags: ['update_teamserver_property_files']
 
+- name: install teamserver war into tomcat
+  include_tasks: install.yml
+  when: teamserver_deploy_enabled
+
 
 # - name: Creating a log rotate file to rotate teamserver logs
-#   template: 
-      # src: contrast_logrotate 
-      # dest: /etc/logrotate.d/teamserver 
-      # owner: root 
+#   template:
+      # src: contrast_logrotate
+      # dest: /etc/logrotate.d/teamserver
+      # owner: root
       # group: root
 
 # - name: Creating an autoscaling script for provisioning
-#   template: 
-      # src: autoscale_script.sh 
-      # dest: {{ teamserver_contrast_datadir }}/bin/autoscaling.sh 
-      # owner: root 
-      # group: root 
+#   template:
+      # src: autoscale_script.sh
+      # dest: {{ teamserver_contrast_datadir }}/bin/autoscaling.sh
+      # owner: root
+      # group: root
       # mode: 0775
 
 # Unnessary if not using SAML
 # - name: Copy SAML Keystore the application servers
-#   copy: 
-#     src: "{{ teamserver_saml_keystore_path }}" 
+#   copy:
+#     src: "{{ teamserver_saml_keystore_path }}"
 #     dest: "{{ teamserver_contrast_datadir }}/saml"
-#     owner: tomcat 
+#     owner: tomcat
 #     group: tomcat
 
 
 # - name: Create public web directory
-#   file: 
-#     path: {{ teamserver_nginx_public_dir }} 
-#     state: directory 
-#     owner: tomcat 
-#     group: tomcat 
+#   file:
+#     path: {{ teamserver_nginx_public_dir }}
+#     state: directory
+#     owner: tomcat
+#     group: tomcat
 #     mode: 0755
 #   when: "teamserver_nginx_public_dir is defined"
