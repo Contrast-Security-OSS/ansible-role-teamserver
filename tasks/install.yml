@@ -1,0 +1,25 @@
+---
+- name: Get latest version
+  uri:
+    url: https://{{ teamserver_hub_host }}/h/api/artifacts/war
+    headers:
+      Authorization: "Bearer {{ hub_api_key }}"
+    status_code: 302
+    follow_redirects: false
+  register: output
+
+- name: Get File Name
+  set_fact:
+    file_name: "{{ (output.location | urlsplit('path')).split('/war/')[1] }}"
+
+- name: Download TS {{ file_name }}
+  get_url:
+    url: https://{{ teamserver_hub_host }}/h/api/artifacts/war
+    headers:
+      Authorization: "Bearer {{ hub_api_key }}"
+    dest: /var/lib/tomcat/webapps/Contrast.war
+    follow: True
+    owner: "{{ tomcat_user }}"
+    group: "{{ tomcat_group }}"
+  notify:
+    - restart tomcat

@@ -232,3 +232,10 @@ teamserver_ardy_proxy_enabled: true
 
 # agent discovery
 agent_s3_bucket:
+
+# hub auth
+hub_api_key:
+
+# Tomcat Properties
+tomcat_user: tomcat
+tomcat_group: tomcat
